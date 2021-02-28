@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login page</title>
+</head>
+<body>
+
+<form action="/login/try">
+    <label for="Username">Username:</label>
+    <input type="text" id="usr" name="username"><br><br>
+    <label for="Password">Password:</label>
+    <input type="password" id="pswd" name="password"><br><br>
+    <input type="submit" value="Enter" onclick="sendEnteredCredentials()">
+</form>
+
+<script>
+    function sendEnteredCredentials(){
+        tryLogin()
+    }
+</script>
+</body>
+</html>
