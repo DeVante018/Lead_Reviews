@@ -1,10 +1,12 @@
 from flask import Flask, redirect, render_template, request
 
+from make_api_call import Api
+
 app = Flask(__name__)
 std_home_page = "standard_home_page.html"
 login = "login.html"
 login_home = "login_home _page.html"
-
+aco = Api()
 
 @app.route("/")
 def not_signed_in_home_page():
@@ -68,4 +70,5 @@ def check_user_hash(username, hash):
 
 
 if __name__ == '__main__':
-    app.run(port=8080, debug=True)
+    json_result = aco.make_call_to_server("titanic")
+    # app.run(port=8080, debug=True)
