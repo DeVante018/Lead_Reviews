@@ -1,0 +1,179 @@
+
+body {
+    background-color: pink;
+    text-align: center;
+    background-image: url(images/signupbackground.jpg) ;
+    background-size: cover; 
+    background-repeat: repeat;
+    /* will change soon, not sure if i want repeating */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+button{
+    border-end-start-radius: 10px;
+    size: 30px;
+    box-shadow: black;
+    color: aquamarine;
+    vertical-align: middle;
+}
+
+banner{
+    margin: auto;
+    font-size: 20pt;
+    font-weight: 800;
+    font-style: italic;
+    padding-top: 10px;
+    background-color: plum;
+    box-shadow: aqua;
+    border-radius: 20px;
+    position: fixed;
+    box-sizing: border-box;
+    height: 75px;
+    width: 100%;
+    display: top;
+    vertical-align: middle;
+    top: 0%;
+    left: 0%;
+    /* i want to right: 50px; */
+}
+
+/* img{
+    width: 500px;
+    height: 750px;
+} */
+
+form{
+    padding-top: 100px;
+    size: 30px;
+    
+}
+
+input[type=text]{
+    /* size: 30px; */
+    border-radius: 5px;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
+
+#submitbutton{
+    background-color: aquamarine;
+    font-size: 30px;
+    border-radius: 10px;
+    border-color: aqua;
+}
+
+#formstuff{
+    font-size: 40px;
+    
+}
+
+taskbar{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid pink;
+    background-color: powderblue;
+
+    font: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+
+
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+li {
+    float: left;
+}
+
+li a{
+    display: list-item;
+    color: lightseagreen;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+li b{
+    display: list-item;
+    color: lightseagreen;
+    text-align: center;
+    padding: 14px 16px;
+    font-style: italic;
+}
+
+li a:hover{
+    background-color: aquamarine;
+}
+
+.search-container {
+    float: right;
+}
+
+.search-container button {
+    /* float: right; */
+    padding: 6px;
+    margin-top: 8px;
+    /* margin-right: 8px; */
+    font-size: 17px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    color: black;
+    background-color: aqua;
+  }
+
+.search-container button:hover{
+    background-color: aquamarine;
+}
+
+.search input[type=text] {
+    float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
+
+userprofiles{
+    float: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #b0e0e6;
+    border: 1px solid pink;
+}
+
+profiles a{
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-bottom: 1px solid pink;
+}
+
+profiles b{
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-bottom: 1px solid pink;
+}
+
+profiles a:hover{
+    background-color: aquamarine;
+}
+
+profiles{
+    text-align: center;
+}
