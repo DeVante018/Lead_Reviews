@@ -3,7 +3,7 @@ from make_api_call import Api
 import json
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="/Users/devantefrederick/IdeaProjects/Lead_Reviews/templates")
 login = "login.html"
 login_home = "login_home_page.html"
 search = "search.html"
