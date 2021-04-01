@@ -1,18 +1,23 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 from make_api_call import Api
 import json
 
-app = Flask(__name__)
-std_home_page = "standard_home_page.html"
+
+app = Flask(__name__, template_folder="/Users/devantefrederick/IdeaProjects/Lead_Reviews/templates")
 login = "login.html"
-login_home = "login_home _page.html"
+login_home = "login_home_page.html"
 search = "search.html"
 aco = Api()
 
 
 @app.route("/")
 def not_signed_in_home_page():
-    return render_template(std_home_page)
+    return render_template(login)
+
+
+@app.route("/static/stylesheets/style.css")
+def serve_css():
+    return url_for('static', filename='style.css')
 
 
 @app.route("/movies/search")
