@@ -3,7 +3,7 @@ from make_api_call import Api
 import json
 
 
-app = Flask(__name__, template_folder="/Users/devantefrederick/IdeaProjects/Lead_Reviews/templates")
+app = Flask(__name__)
 login = "login.html"
 login_home = "login_home_page.html"
 search = "search.html"
@@ -13,11 +13,6 @@ aco = Api()
 @app.route("/")
 def not_signed_in_home_page():
     return render_template(login)
-
-
-@app.route("/static/stylesheets/style.css")
-def serve_css():
-    return url_for('static', filename='style.css')
 
 
 @app.route("/movies/search")

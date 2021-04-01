@@ -1,7 +1,7 @@
 body {
     background-color: pink;
     text-align: center;
-    background-image: url(../../images/signupbackground.jpg) ;
+    background-image: url(/static/images/signupbackground.jpg) ;
     background-size: cover; 
     background-repeat: repeat;
     /* will change soon, not sure if i want repeating */
