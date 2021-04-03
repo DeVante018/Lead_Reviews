@@ -1,18 +1,21 @@
 from flask import Flask, redirect, render_template, request, url_for
 from make_api_call import Api
 import json
+import functions
 
 
-app = Flask(__name__, template_folder="/Users/devantefrederick/IdeaProjects/Lead_Reviews/templates")
+app = Flask(__name__, template_folder="templates")
 login = "login.html"
-login_home = "login_home_page.html"
+login_home = "main.html"
 search = "search.html"
+signup = "signup.html"
+not_found = "notfound.html"
 aco = Api()
 
 
 @app.route("/")
-def not_signed_in_home_page():
-    return render_template(login)
+def signin():
+    return render_template("login.html")
 
 
 @app.route("/movies/search")
@@ -29,27 +32,17 @@ def search_movie():
     return "done"
 
 
-@app.route("/login")
+@app.route("/templates/signup.html")
+def signup():
+    return render_template("signup.html")
+
+
+@app.route("/login", methods=['POST'])
 def user_login():
-    return render_template(login)
-
-
-@app.route("/login/{user}")
-def user_home(user):
-    return render_template(login_home)
-
-
-@app.route("/login/try", methods=['POST'])
-def parse_request():
     username = request.form['username']
     password = request.form['password']
-
-    usr_exist = False
-    valid_password = False
-
-    print(username, password)
-
-    if usr_exist and valid_password:
+    res = functions.validate_credentials(username, password)
+    if res:
         return redirect("/login/" + username)
     else:
         return error_response()
@@ -57,9 +50,14 @@ def parse_request():
     # if user exist check they have the correct password
 
 
+@app.route("/login/<user>", methods=['GET'])
+def user_home(user):
+    print(user, " just logged in")
+    return render_template(login_home)
+
+
 def error_response():
-    response = "Username or password not found"
-    return response
+    return render_template(not_found)
 
 
 @app.route("/user/like/movie", methods=['POST'])
