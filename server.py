@@ -1,10 +1,46 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, session, flash
+from flask_mongoengine import MongoEngine
+from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin
+from flask_pymongo import pymongo, PyMongo
 from make_api_call import Api
+from bson.objectid import ObjectId
+
 import json
 import functions
-
+import os
 
 app = Flask(__name__, template_folder="templates")
+app.secret_key = os.urandom(16)
+app.config['SECRET_KEY'] = app.secret_key
+
+app.config['MONGO_URI'] = "mongodb://localhost:27017/leadreviews"
+
+mongo = PyMongo(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+class User:
+    data_base = mongo.db
+    def __init__(self, username):
+        self.username = username
+
+    @staticmethod
+    def is_authenticated():
+        return True
+
+    @staticmethod
+    def is_active():
+        return True
+
+    @staticmethod
+    def is_anonymous():
+        return False
+
+    def get_id(self):
+        return self.username
+
+
 login = "login.html"
 login_home = "main.html"
 search = "search.html"
@@ -13,17 +49,35 @@ not_found = "notfound.html"
 aco = Api()
 
 
+@login_manager.user_loader
+def load_user(username):
+    u = mongo.db.users.find_one({"username": username})
+    if not u:
+        return None
+    return User(username=u["username"])
+
+
 @app.route("/")
 def signin():
+
     return render_template("login.html")
 
 
+@app.route('/logout')
+@login_required
+def signout():
+    logout_user()
+    return 'You are now logged out'
+
+
 @app.route("/movies/search")
+@login_required
 def search_page():
     return render_template(search)
 
 
 @app.route("/movies/search/go", methods=['POST'])
+@login_required
 def search_movie():
     name_of_movie = request.form['movie']
     print(name_of_movie)
@@ -32,27 +86,38 @@ def search_movie():
     return "done"
 
 
-@app.route("/templates/signup.html")
+@app.route("/signup.html")
 def signup():
     return render_template("signup.html")
 
 
 @app.route("/login", methods=['POST'])
 def user_login():
+    usr_login = False
     username = request.form['username']
     password = request.form['password']
-    res = functions.validate_credentials(username, password)
-    if res:
-        return redirect("/login/" + username)
+    data = User.data_base.users.find({"username": username})
+    for ent in data:
+        if ent['password'] == password:
+            usr_login = True
+    if usr_login:
+        print("username :", username)
+        print("password :", password)
+        usr_obj = User(username=username)
+        login_user(usr_obj)
+        return redirect("/login/homepage")
     else:
+        flash("Invalid username or password")
         return error_response()
     # check if user is in the data base
     # if user exist check they have the correct password
 
 
-@app.route("/login/<user>", methods=['GET'])
-def user_home(user):
-    print(user, " just logged in")
+@app.route("/login/homepage", methods=['GET'])
+@login_required
+def user_home():
+    # check database if user is logged in
+    print("just logged in")
     return render_template(login_home)
 
 
@@ -61,26 +126,10 @@ def error_response():
 
 
 @app.route("/user/like/movie", methods=['POST'])
+@login_required
 def like_movie(movie_id, movie_name, user_name, user_hash):
     value = 0
-    check_hash = check_user_hash(user_name, user_hash)
-    # make sql request to database
-    if check_hash == 1:
-        kjbi = 0
-        # do more stuff
-    else:
-        iguv = 0
-        # return current number in database
-
-
-def check_user_hash(username, hash):
-    # make call to database
-    # username would be used to search name in database
-    database_result = "find_user_hash(username)" # this would be the function call
-    if hash == database_result:
-        return 1
-    else:
-        return 0
+    return "no implementation"
 
 
 def parse_movie_response(movie_name):
@@ -103,4 +152,4 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=8081, debug=True)
+    app.run(port=8010, debug=True)
