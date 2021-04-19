@@ -8,8 +8,8 @@
     <li><b>leadreviews</b></li>
     <li><a href="main.html">home</a></li>
     <li><a href="settings.html">settings</a></li>
-    <li><a href="signup.html">signup</a></li>
-    <li><a href="login.html">login</a></li>
+    <!-- <li><a href="signup.html">signup</a></li>
+    <li><a href="login.html">login</a></li> -->
     <!-- <div class="search">
         <input type="text" placeholder="Search.."></inputb>
     </div> -->
@@ -31,6 +31,12 @@
         {{start_loop}}<profiles><a href="chatbox.html">{{Username}}</a></profiles>{{end_loop}}
     </userprofiles>
 
+
+    <movies>
+        {{start_movies_loop}}
+        <p>{{Movie_Details}}</p>
+        {{end_movies_loop}}
+    </movies>
     
 
 </body>

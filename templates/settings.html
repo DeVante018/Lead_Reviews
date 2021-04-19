@@ -9,13 +9,23 @@
         <li><b>leadreviews</b></li>
         <li><a href="main.html">home</a></li>
         <li><a href="settings.html">settings</a></li>
-        <li><a href="signup.html">signup</a></li>
-        <li><a href="login.html">login</a></li>
+        <!-- <li><a href="signup.html">signup</a></li>
+        <li><a href="login.html">login</a></li> -->
     </taskbar>
     </head>
     <body>
         <h1> Settings Page</h1>
-        <p> TURN ON PG-13 ONLY</p>
+        <!-- <p> Show R-18 movies or not:</p> -->
+        <form action="/r18" id="r18-form" method="post">
+            <p> Show R-18 movies or not: {{On_Off_Indicator}}</p>
+            <input type="submit" id="toggle" value="toggle on/off">
+        </form>
+
+        <!-- <h1> Log Out: </h1> -->
+        <form action="log-out" id="logout-form" method="post">
+            <p> Log Out: </p>
+            <input type="submit" id="logout" value="Log Out">
+        </form>
         <!-- <p> -->
             <!-- <div onclick = "noDisturb()">Do Not Disturb</div> -->
         <!-- </p>
