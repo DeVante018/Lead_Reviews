@@ -34,7 +34,24 @@
 
     <movies>
         {{start_movies_loop}}
-        <p>{{Movie_Details}}</p>
+        <movieposts>
+            {{Movie_Name}}
+            <img src= {{Image_API}} alt= "Movie Picture" height = "500" width= "500">
+            <div class="buttons">
+                {{Vote Message}} -->
+                <!-- if not voted, show only the amount of votes on good or bad -->
+                <!-- if voted, say you have voted good or bad and show the amount of votes on good or bad -->
+                <!-- user should not be able to vote more than once, if they vote the other choice,
+                then their previous choice will be canceled -->
+                <form action="/votegood" method="post">
+                    <input type="submit" class="button" value="Good">
+                </form>
+                <form action="/votebad" method="post">
+                    <input type="submit" class="button" value="Bad">
+                </form>
+
+            </div>
+        </movieposts>
         {{end_movies_loop}}
     </movies>
     
