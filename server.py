@@ -1,13 +1,11 @@
-from flask import Flask, redirect, render_template, request, session, flash
-from flask_mongoengine import MongoEngine
-from flask_login import LoginManager, login_required, logout_user, login_user, UserMixin
-from flask_pymongo import pymongo, PyMongo
-from make_api_call import Api
-from bson.objectid import ObjectId
-
 import json
-import functions
 import os
+
+from flask import Flask, redirect, render_template, request, flash
+from flask_login import LoginManager, login_required, logout_user, login_user
+from flask_pymongo import PyMongo
+
+from make_api_call import Api
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(16)
@@ -22,6 +20,7 @@ login_manager.init_app(app)
 
 class User:
     data_base = mongo.db
+
     def __init__(self, username):
         self.username = username
 
@@ -58,37 +57,28 @@ def load_user(username):
 
 
 @app.route("/")
+@app.route("/login.html")
+@app.route("/templates/login.html")
 def signin():
-
     return render_template("login.html")
 
 
-@app.route('/logout')
-@login_required
-def signout():
-    logout_user()
-    return 'You are now logged out'
-
-
-@app.route("/movies/search")
-@login_required
-def search_page():
-    return render_template(search)
-
-
-@app.route("/movies/search/go", methods=['POST'])
-@login_required
-def search_movie():
-    name_of_movie = request.form['movie']
-    print(name_of_movie)
-    call = aco.make_call_to_server(name_of_movie)
-    parse_movie_response(call)
-    return "done"
-
-
 @app.route("/signup.html")
+@app.route("/templates/signup.html")
 def signup():
     return render_template("signup.html")
+
+
+@app.route("/create-account", methods=['POST'])
+def create_account():
+    username = request.form['usr']
+    email = request.form['eml']
+    password = request.form['pswd']
+    # We will 100% absolutely hash and salt the passwords
+    # We will do name validity so no duplicate user can exist
+    # Email will be added to the database later on
+    User.data_base.users.insert_one({"username": username, "password": password})
+    return redirect("/")
 
 
 @app.route("/login", methods=['POST'])
@@ -113,7 +103,37 @@ def user_login():
     # if user exist check they have the correct password
 
 
+@app.route('/login/log-out', methods=['POST'])
+@login_required
+def signout():
+    logout_user()
+    return redirect("/")
+
+
+@app.route('/login/settings.html')
+@login_required
+def usr_settings():
+    return render_template("settings.html")
+
+
+@app.route("/movies/search")
+@login_required
+def search_page():
+    return render_template(search)
+
+
+@app.route("/movies/search/go", methods=['POST'])
+@login_required
+def search_movie():
+    name_of_movie = request.form['movie']
+    print(name_of_movie)
+    call = aco.make_call_to_server(name_of_movie)
+    parse_movie_response(call)
+    return "done"
+
+
 @app.route("/login/homepage", methods=['GET'])
+@app.route("/login/main.html")
 @login_required
 def user_home():
     # check database if user is logged in
@@ -130,6 +150,11 @@ def error_response():
 def like_movie(movie_id, movie_name, user_name, user_hash):
     value = 0
     return "no implementation"
+
+
+@app.route("/r18", methods=['POST'])
+def change_age_settings():
+    return redirect('/login/homepage')
 
 
 def parse_movie_response(movie_name):
