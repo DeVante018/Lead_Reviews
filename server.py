@@ -4,14 +4,13 @@ import os
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
-
-from make_api_call import Api
+from src.make_api_call import Api
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(16)
 app.config['SECRET_KEY'] = app.secret_key
 
-app.config['MONGO_URI'] = "mongodb://localhost:27017/leadreviews"
+app.config['MONGO_URI'] = "mongodb://database:27017/leadreviews"
 
 mongo = PyMongo(app)
 login_manager = LoginManager()
@@ -177,4 +176,4 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=8010, debug=True)
+    app.run(port=8000, debug=True)
