@@ -2,7 +2,6 @@
 <html>
 <head>
     <link rel="stylesheet" href="../static/stylesheets/style.css">
-
 <title>leadreviews</title>
 <taskbar>
     <li><b>leadreviews</b></li>
@@ -10,15 +9,12 @@
     <li><a href="settings.html">settings</a></li>
     <!-- <li><a href="signup.html">signup</a></li>
     <li><a href="login.html">login</a></li> -->
-    <!-- <div class="search">
+    <div class="search">
         <input type="text" placeholder="Search.."></inputb>
-    </div> -->
-    <!-- <div class="search-container"> -->
-        <form action="/search" id="search-bar" method="post">
-        Searchbar&nbsp;&nbsp;<label for="search"></label><input type="text" id="search" name="search" placeholder="Search for...">
-        <input type="submit" id="submitbutton" value="search">
-        </form>
-    <!-- </div> -->
+    </div>
+    <div class="search-container">
+        <button>Submit</button>
+    </div>
 </taskbar>
 </head>
 
@@ -38,7 +34,7 @@
             {{Movie_Name}}
             <img src= {{Image_API}} alt= "Movie Picture" height = "500" width= "500">
             <div class="buttons">
-                {{Vote Message}} -->
+                <!-- {Vote Message}-->
                 <!-- if not voted, show only the amount of votes on good or bad -->
                 <!-- if voted, say you have voted good or bad and show the amount of votes on good or bad -->
                 <!-- user should not be able to vote more than once, if they vote the other choice,
