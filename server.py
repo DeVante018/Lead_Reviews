@@ -1,5 +1,6 @@
 import json
 import os
+import bcrypt
 
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
@@ -10,7 +11,8 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(16)
 app.config['SECRET_KEY'] = app.secret_key
 
-app.config['MONGO_URI'] = "mongodb://database:27017/leadreviews"
+# CHANGE localhost TO database - DELETE
+app.config['MONGO_URI'] = "mongodb://localhost:27017/leadreviews"
 
 mongo = PyMongo(app)
 login_manager = LoginManager()
@@ -73,9 +75,19 @@ def create_account():
     username = request.form['usr']
     email = request.form['eml']
     password = request.form['pswd']
-    # We will 100% absolutely hash and salt the passwords
+
     # We will do name validity so no duplicate user can exist
+    if User.data_base.users.find({"username": username}).count() > 0:
+        pass # display username already exists
+
     # Email will be added to the database later on
+    if User.data_base.users.find({"username": username}).count() > 0:
+        # change user name to email ^^^         ^^^
+        pass # display email already has an account associated with it
+
+    # Salt and hash password; store in database
+    salt = bcrypt.gensalt()
+    password = bcrypt.hashpw(password.encode(), salt)
     User.data_base.users.insert_one({"username": username, "password": password})
     return redirect("/")
 
@@ -87,7 +99,7 @@ def user_login():
     password = request.form['password']
     data = User.data_base.users.find({"username": username})
     for ent in data:
-        if ent['password'] == password:
+        if bcrypt.checkpw(password.encode(), ent['password']):
             usr_login = True
     if usr_login:
         print("username :", username)
