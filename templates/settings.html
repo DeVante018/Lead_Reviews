@@ -15,26 +15,17 @@
     </head>
     <body>
         <h1> Settings Page</h1>
-        <!-- <p> Show R-18 movies or not:</p> -->
-        <form action="/r18" id="r18-form" method="post">
-            <p> Show R-18 movies or not: {{On_Off_Indicator}}</p>
+        <form action="/disturb" id="disturb-form" method="post">
+            <p> Do Not Disturb: {{On_Off_Indicator}}</p>
+            <p> Note: By turning this on, you will not receive any message notification.</p>
             <input type="submit" id="toggle" value="toggle on/off">
         </form>
 
-        <!-- <h1> Log Out: </h1> -->
         <form action="log-out" id="logout-form" method="post">
             <p> Log Out: </p>
             <input type="submit" id="logout" value="Log Out">
         </form>
-        <!-- <p> -->
-            <!-- <div onclick = "noDisturb()">Do Not Disturb</div> -->
-        <!-- </p>
-        <p> 
-            <a href = "editAccount.html">Edit Account</a>
-        </p>
-        <p>
-            <div onclick = "deleteAccountAlert()">Delete Account</div>
-        </p> -->
+
     </body>
 
 </html>

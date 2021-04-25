@@ -18,6 +18,7 @@
 </taskbar>
 </head>
 
+<script src="../static/functions.js"></script>
 <body>
 
     <!-- whoever is online right now and then redirect to their page-->
@@ -39,13 +40,14 @@
                 <!-- if voted, say you have voted good or bad and show the amount of votes on good or bad -->
                 <!-- user should not be able to vote more than once, if they vote the other choice,
                 then their previous choice will be canceled -->
-                <form action="/votegood" method="post">
+                <!-- <form action="/votegood" method="post">
                     <input type="submit" class="button" value="Good">
                 </form>
                 <form action="/votebad" method="post">
                     <input type="submit" class="button" value="Bad">
-                </form>
-
+                </form> -->
+                <button onclick="sendLike()"> Like </button>
+                <button onclick="sendDislike()"> Dislike </button>
             </div>
         </movieposts>
         {{end_movies_loop}}
