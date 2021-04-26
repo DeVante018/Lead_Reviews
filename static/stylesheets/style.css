@@ -57,6 +57,16 @@ input[type=text]{
     font-size: 17px;
 }
 
+input[type=password]{
+    /* size: 30px; */
+    border-radius: 5px;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
+
 #submitbutton{
     background-color: aquamarine;
     font-size: 30px;
