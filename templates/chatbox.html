@@ -20,7 +20,11 @@
 </head>
 
 <body>
-    <h1> You are chatting with: {{person_name}} </h1>
+    <h1> You are chatting with:
+        <img src={Person_Profile_Image} height="300" width="300"></img>
+        <p> {{person_name}}</p>
+    </h1>
+
 
     <div style="overflow-y: auto; justify-content: left;">
         {{start_loop}}
