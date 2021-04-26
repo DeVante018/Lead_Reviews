@@ -1,6 +1,7 @@
 import json
 import os
 import bcrypt
+import flask_login
 
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
@@ -21,6 +22,7 @@ login_manager.init_app(app)
 
 class User:
     data_base = mongo.db
+    username = ""
 
     def __init__(self, username):
         self.username = username
@@ -78,17 +80,17 @@ def create_account():
 
     # We will do name validity so no duplicate user can exist
     if User.data_base.users.find({"username": username}).count() > 0:
-        pass # display username already exists
+        pass  # display username already exists
 
     # Email will be added to the database later on
-    if User.data_base.users.find({"username": username}).count() > 0:
+    if User.data_base.users.find({"email": username}).count() > 0:
         # change user name to email ^^^         ^^^
-        pass # display email already has an account associated with it
+        pass  # display email already has an account associated with it
 
     # Salt and hash password; store in database
     salt = bcrypt.gensalt()
     password = bcrypt.hashpw(password.encode(), salt)
-    User.data_base.users.insert_one({"username": username, "password": password})
+    User.data_base.users.insert_one({"username": username, "password": password, "email": email, "do_not_disturb": False})
     return redirect("/")
 
 
@@ -163,8 +165,36 @@ def like_movie(movie_id, movie_name, user_name, user_hash):
     return "no implementation"
 
 
-@app.route("/r18", methods=['POST'])
-def change_age_settings():
+@app.route("/disturb", methods=['POST'])
+@login_required
+def do_not_disturb():
+    cur_usr = flask_login.current_user
+    user = cur_usr.username
+    print("Current user :", user)
+    data = User.data_base.users.find({"username": user})
+    cur_setting = True
+    for fields in data:
+        cur_setting = fields['do_not_disturb']
+
+    if cur_setting:
+        User.data_base.users.update_one(
+            {"username": user},
+            {
+                "$set": {
+                    "do_not_disturb": False}
+            }
+        )
+
+    else:
+        print("Setting was false")
+        User.data_base.users.update_one(
+            {"username": user},
+            {
+                "$set": {
+                    "do_not_disturb": True}
+            }
+        )
+
     return redirect('/login/homepage')
 
 
