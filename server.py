@@ -7,6 +7,8 @@ import src.chat
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
+
+from custom_html_pages import settings_page
 from src.make_api_call import Api
 
 app = Flask(__name__, template_folder="templates")
@@ -127,7 +129,7 @@ def signout():
 @app.route('/login/settings.html')
 @login_required
 def usr_settings():
-    return render_template("settings.html")
+    return settings_page()
 
 
 @app.route("/movies/search")
