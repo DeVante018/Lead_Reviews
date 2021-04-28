@@ -2,6 +2,7 @@ import json
 import os
 import bcrypt
 import flask_login
+import src.chat
 
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
@@ -196,6 +197,16 @@ def do_not_disturb():
         )
 
     return redirect('/login/homepage')
+
+
+@app.route("/chat", methods=['GET'])
+def dm():
+    return render_template('chatbox.html')
+
+
+@app.route("/uploadtext", methods=['POST'])
+def send_message():
+    print("TEMP")
 
 
 def parse_movie_response(movie_name):
