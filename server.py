@@ -46,11 +46,11 @@ class User:
         return self.username
 
 
-login = "login.html"
-login_home = "main.html"
-search = "search.html"
-signup = "signup.html"
-not_found = "notfound.html"
+login = "login"
+login_home = "main"
+search = "search"
+signup = "signup"
+not_found = "notfound"
 aco = Api()
 
 
@@ -63,13 +63,13 @@ def load_user(username):
 
 
 @app.route("/")
-@app.route("/login.html")
+@app.route("/login")
 @app.route("/templates/login.html")
 def signin():
     return render_template("login.html")
 
 
-@app.route("/signup.html")
+@app.route("/signup")
 @app.route("/templates/signup.html")
 def signup():
     return render_template("signup.html")
@@ -130,7 +130,7 @@ def signout():
     return redirect("/")
 
 
-@app.route('/login/settings.html')
+@app.route('/login/settings')
 @login_required
 def usr_settings():
     return custom_html_pages.settings_page(User.data_base)
@@ -153,7 +153,7 @@ def search_movie():
 
 
 @app.route("/login/homepage", methods=['GET'])
-@app.route("/login/main.html")
+@app.route("/login/main")
 @login_required
 def user_home():
     # check database if user is logged in
@@ -221,10 +221,11 @@ def do_not_disturb():
             }
         )
 
-    return redirect('/login/settings.html')
+    return redirect('/login/settings')
 
 
-@app.route("/chat", methods=['GET'])
+@app.route("/login/chatbox", methods=['GET'])
+@app.route("/chatbox", methods=['GET'])
 def dm():
     return render_template('chatbox.html')
 
