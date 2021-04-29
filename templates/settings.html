@@ -16,9 +16,9 @@
     <body>
         <h1> Settings Page</h1>
         <img src={Profile_Image} height="300" width="300"></image>
-        <form action="/profilepic-upload" id="profilepic-form" method="post">
-            <label for="image-form-name">Caption: </label>
-            <input id="image-form-name" type="text" name="name">
+        <form action="/profilepic-upload" id="profilepic-form" method="post" enctype="multipart/form-data">
+            <label for="form-file"> Upload a profile Image </label>
+            <input id="form-file" type="file" name="upload">
             <input type="submit" value="Submit">
          </form>
 
