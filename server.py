@@ -8,7 +8,7 @@ from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 
-from custom_html_pages import settings_page
+import custom_html_pages
 from src.make_api_call import Api
 
 app = Flask(__name__, template_folder="templates")
@@ -93,6 +93,7 @@ def create_account():
     # Salt and hash password; store in database
     salt = bcrypt.gensalt()
     password = bcrypt.hashpw(password.encode(), salt)
+    User.data_base.online.insert_one({"username": username, "status": "offline"})
     User.data_base.users.insert_one({"username": username, "password": password, "email": email, "do_not_disturb": False})
     return redirect("/")
 
@@ -111,6 +112,7 @@ def user_login():
         print("password :", password)
         usr_obj = User(username=username)
         login_user(usr_obj)
+        custom_html_pages.set_online(username, User.data_base)
         return redirect("/login/homepage")
     else:
         flash("Invalid username or password")
@@ -122,6 +124,8 @@ def user_login():
 @app.route('/login/log-out', methods=['POST'])
 @login_required
 def signout():
+    cur_usr = flask_login.current_user
+    custom_html_pages.set_offline(cur_usr.username, User.data_base)
     logout_user()
     return redirect("/")
 
@@ -129,7 +133,7 @@ def signout():
 @app.route('/login/settings.html')
 @login_required
 def usr_settings():
-    return settings_page()
+    return custom_html_pages.settings_page(User.data_base)
 
 
 @app.route("/movies/search")
@@ -153,8 +157,27 @@ def search_movie():
 @login_required
 def user_home():
     # check database if user is logged in
-    print("just logged in")
-    return render_template(login_home)
+    cur_usr = flask_login.current_user
+    online_users = custom_html_pages.get_online_users(cur_usr.username, User.data_base)
+    new_main = ""
+    f = open("../templates/main.html")
+    print(online_users)
+
+    for line in f:
+        if '{{Username}}' in line:
+            for names in online_users:
+                line = line.replace("{{start_loop}}", "")
+                line = line.replace("{{end_loop}}", "")
+                new_main += line.replace("{{Username}}", names)
+        elif "{{Image_API}}" in line:
+            new_main += line.replace("{{Image_API}}", "../static/images/default-movie.jpeg")
+        elif "{{Movie_Name}}" in line:
+            new_main += line.replace("{{Movie_Name}}", "NONE")
+        else:
+            if "{{start_movies_loop}}" not in line and "{{end_movies_loop}}" not in line:
+                new_main += line
+
+    return new_main
 
 
 def error_response():
@@ -198,7 +221,7 @@ def do_not_disturb():
             }
         )
 
-    return redirect('/login/homepage')
+    return redirect('/login/settings.html')
 
 
 @app.route("/chat", methods=['GET'])
