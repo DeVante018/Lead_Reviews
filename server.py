@@ -16,7 +16,7 @@ app.secret_key = os.urandom(16)
 app.config['SECRET_KEY'] = app.secret_key
 
 # CHANGE localhost TO database - DELETE
-app.config['MONGO_URI'] = "mongodb://localhost:27017/leadreviews"
+app.config['MONGO_URI'] = "mongodb://database/leadreviews"
 
 mongo = PyMongo(app)
 login_manager = LoginManager()
@@ -255,4 +255,4 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=8000, host="0.0.0.0", debug=True)
+    app.run(port=80, host="0.0.0.0", debug=True)
