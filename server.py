@@ -254,4 +254,4 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=80, host="0.0.0.0", debug=True)
+    app.run(port=8000, host="0.0.0.0")
