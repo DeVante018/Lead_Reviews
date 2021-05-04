@@ -17,7 +17,36 @@
     </div>
 </taskbar>
 </head>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+            var socket = io.connect('/main');
+            socket.on('connect', function(){
+                socket.emit('my_event', {data: 'A user has logged on!'})
+            })
+            // listen for like_response from server socketio and gets the updated like counter from server and show on page
+            socket.on('like_response', function(message){
+                $('#like_counter').append(message);
+            })
+            // listen for dislike_response from server socketion and gets the updated dislike counter from server and show on page
+            socket.on('dislike_response', function(message) {
+                $('#dislike_counter').append(message);
+            })
+            // sends a like to the server under like_event
+            // the data is a 1 string, which should be converted to integer and added to the stored like counter on the server which will be returned.
+            $('#likebutton').on('click', function(event) {
+                socket.emit('like_event', {data: '1'});
+                return false;
+            });
+            // sends a dislike to the server under dislike_event
+            // the data is a 1 string, which should be converted to integer and added to the stored dislike counter on the server which will be returned.
+            $('#dislikebutton').on('click', function(event) {
+                socket.emit('dislike_event', {data: '1'});
+                return false;
+            })
+        }); 
+    </script>
 <script src="../static/functions.js"></script>
 <body>
 
@@ -38,31 +67,21 @@
         {{end_loop}}
     </userprofiles>
 
-
     <movies>
         {{start_movies_loop}}
         <movieposts>
             {{Movie_Name}}
-            <img src= {{Image_API}} alt= "Movie Picture" height = "200" width= "200">
-            <div class="buttons">
-                <!-- {Vote Message}-->
-                <!-- if not voted, show only the amount of votes on good or bad -->
-                <!-- if voted, say you have voted good or bad and show the amount of votes on good or bad -->
-                <!-- user should not be able to vote more than once, if they vote the other choice,
-                then their previous choice will be canceled -->
-                <!-- <form action="/votegood" method="post">
-                    <input type="submit" class="button" value="Good">
-                </form>
-                <form action="/votebad" method="post">
-                    <input type="submit" class="button" value="Bad">
-                </form> -->
-                <button onclick="sendLike()"> Like </button>
-                <button onclick="sendDislike()"> Dislike </button>
-            </div>
+            <img src= {{Image_API}} alt= "Movie Picture" height = "500" width= "500">
+                <div id="like_counter"></div>
+                <div id="dislike_counter"></div>
+                <!-- Note: -->
+                <!-- SPAMMING LIKES AND DISLIKE BUTTONS -->
+                <!-- USERS CAN SPAM LIKE OR DISLIKES HOWEVER THEY LIKE -->
+                <button id="likebutton"> ADD LIKE </button>
+                <button id="dislikebutton"> ADD DISLIKE </button>
+            <!-- </div> -->
         </movieposts>
         {{end_movies_loop}}
     </movies>
-    
-
 </body>
 </html>
