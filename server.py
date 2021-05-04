@@ -6,8 +6,9 @@ import flask_login
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
+from werkzeug.utils import secure_filename
 
-from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users
+from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users, allowed_file, store_in_db
 from src.make_api_call import Api
 from flask_socketio import SocketIO
 
@@ -17,7 +18,7 @@ app.config['SECRET_KEY'] = app.secret_key
 
 # CHANGE localhost TO database - DELETE
 app.config['MONGO_URI'] = "mongodb://database/leadreviews"
-
+app.config['UPLOAD_FOLDER'] = 'static/images'
 mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -237,6 +238,23 @@ def send_message():
     print("TEMP")
 
 
+@app.route("/profilepic-upload", methods=['GET', 'POST'])
+def upload_picture():
+    print(request.files)
+    if 'upload' not in request.files:
+        print("file not found")
+        return redirect('/login/settings')
+    file = request.files['upload']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect('login/settings')
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        store_in_db(User.data_base, flask_login.current_user.username, filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return redirect("login/settings")
+
+
 def parse_movie_response(movie_name):
     s = json.loads(movie_name)
     # print(s)
@@ -270,5 +288,4 @@ def check_users(username, email):
 
 
 if __name__ == '__main__':
-    # app.run(port=8000, host="0.0.0.0")
-    socketio.run(app, port=8000, host="0.0.0.0")
+    socketio.run(app, port=8000, host="0.0.0.0", debug=True)
