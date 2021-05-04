@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/style.css')}}">
+    <script type="text/javascript" src="extra.js" async></script>
+<title>leadreviews</title>
+<taskbar>
+    <li><b>leadreviews</b></li>
+    <li><a href="/login">login</a></li>
+</taskbar>
+</head>
+
+<body>
+ 
+    <div>
+        Username already taken! Click back to return to sign up page!
+        <p> <a href="login"> Back </a></p>
+    </div>
+    <br>
+    <div id="login">
+        <p> Already have an account? <a href="/login">Log in</a> here</p>
+    </div>
+</body>
+</html>
