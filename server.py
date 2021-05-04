@@ -80,12 +80,14 @@ def create_account():
 
     # We will do name validity so no duplicate user can exist
     if User.data_base.users.find({"username": username}).count() > 0:
-        pass  # display username already exists
+        # display username already exists
+        return redirect("/create-account")
 
     # Email will be added to the database later on
     if User.data_base.users.find({"email": username}).count() > 0:
         # change user name to email ^^^         ^^^
-        pass  # display email already has an account associated with it
+        # display email already has an account associated with it
+        return redirect("/create-account")
 
     # Salt and hash password; store in database
     salt = bcrypt.gensalt()
