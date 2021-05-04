@@ -9,6 +9,7 @@ from flask_pymongo import PyMongo
 
 from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users
 from src.make_api_call import Api
+from flask_socketio import SocketIO
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(16)
@@ -21,6 +22,7 @@ mongo = PyMongo(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+socketio = SocketIO(app)
 
 class User:
     data_base = mongo.db
@@ -63,13 +65,13 @@ def load_user(username):
 
 @app.route("/")
 @app.route("/login")
-@app.route("/templates/login.html")
+# @app.route("/templates/login.html")
 def signin():
     return render_template("login.html")
 
 
 @app.route("/signup")
-@app.route("/templates/signup.html")
+# @app.route("/templates/signup.html")
 def signup():
     return render_template("signup.html")
 
@@ -254,4 +256,5 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=8000, host="0.0.0.0")
+    # app.run(port=8000, host="0.0.0.0")
+    socketio.run(app, port=8000, host="0.0.0.0")
