@@ -1,6 +1,8 @@
 # all methods for creating html pages for the specific user
 import flask_login
 
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 
 def settings_page(database) -> str:
     do_not_disturb = ""
@@ -11,14 +13,15 @@ def settings_page(database) -> str:
         do_not_disturb = info['do_not_disturb']
 
     f = open("templates/settings.html", 'r')
-    defalt_img = "/static/images/default_pic.png"
+    img = "/static/images/default_pic.png"
     custom = ""
-    #
-    # TODO: check database if a profile picture for this user has been uploaded, else set default picture
-    #
+    check_profile_image = database.pictures.find({"username": user})
+    for x in check_profile_image:
+        img = "/static/images/" + x['picture']
+
     for line in f:
         if '{Profile_Image}' in line:
-            custom += line.replace('{Profile_Image}', defalt_img)
+            custom += line.replace('{Profile_Image}', img)
         elif '{{On_Off_Indicator}}' in line:
             if do_not_disturb:
                 custom += line.replace('{{On_Off_Indicator}}', "off")
@@ -58,3 +61,26 @@ def set_offline(username, database):
         }
     )
 
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def store_in_db(db, usr, filename):
+    profile = db.pictures.find({"username": usr})
+    has_user = False
+    for _ in profile:
+        has_user = True
+    if not has_user:
+        db.pictures.insert_one({"username": usr, "picture": filename})
+    else:
+        print("updating")
+    db.pictures.update_one(
+        {"username": usr},
+        {
+            "$set": {
+                "picture": filename}
+        }
+    )
+    return
