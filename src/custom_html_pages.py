@@ -10,8 +10,8 @@ def settings_page(database) -> str:
     for info in data:
         do_not_disturb = info['do_not_disturb']
 
-    f = open("../templates/settings.html", 'r')
-    defalt_img = "../static/images/default_pic.png"
+    f = open("templates/settings.html", 'r')
+    defalt_img = "/static/images/default_pic.png"
     custom = ""
     #
     # TODO: check database if a profile picture for this user has been uploaded, else set default picture

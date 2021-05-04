@@ -7,6 +7,12 @@
     <li><b>leadreviews</b></li>
     <li><a href="main">home</a></li>
     <li><a href="settings">settings</a></li>
+    <!-- <div class="search">
+        <input type="text" placeholder="Search.."></inputb>
+    </div>
+    <div class="search-container">
+        <button>Submit</button>
+    </div> -->
 </taskbar>
 
 </head>
@@ -21,11 +27,19 @@
     <div style="overflow-y: auto; justify-content: left;">
         {{start_loop}}
         <p> {{name}} : &quot;{{comment}}&quot;</p>
-        <p> {{name}} : </br> <img src="{{image_name}}" alt="picture did not load correctly, please try again" height="300" width="300"></image> </p>
+        <!-- <p> {{name}} : </br> <img src="{{image_name}}" alt="picture did not load correctly, please try again" height="300" width="300"></image> </p> -->
         {{end_loop}}
     </div>
+
     <br/>
-    
+    <!-- <div style="position:absolute; bottom: 100px;">
+        <form action="/uploadimage" id="upload-image" method="post">
+        <label for="form-file"> <b>Image: </b></label>
+        <input id="form-file" type="file" name="upload" required>
+        <input type="submit"  id="submitbutton" value="Send">
+        </form>
+    </div> -->
+
     <div style="position:absolute; bottom: 10px;">
         <form action="/uploadtext" id="upload-text" method="post">
         <label for="commenting"> <b>Messages: </b> </label>

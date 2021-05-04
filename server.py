@@ -1,14 +1,13 @@
 import json
 import os
+
 import bcrypt
 import flask_login
-import src.chat
-
 from flask import Flask, redirect, render_template, request, flash
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 
-import custom_html_pages
+from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users
 from src.make_api_call import Api
 
 app = Flask(__name__, template_folder="templates")
@@ -16,7 +15,7 @@ app.secret_key = os.urandom(16)
 app.config['SECRET_KEY'] = app.secret_key
 
 # CHANGE localhost TO database - DELETE
-app.config['MONGO_URI'] = "mongodb://localhost:27017/leadreviews"
+app.config['MONGO_URI'] = "mongodb://database/leadreviews"
 
 mongo = PyMongo(app)
 login_manager = LoginManager()
@@ -110,7 +109,7 @@ def user_login():
         print("password :", password)
         usr_obj = User(username=username)
         login_user(usr_obj)
-        custom_html_pages.set_online(username, User.data_base)
+        set_online(username, User.data_base)
         return redirect("/login/homepage")
     else:
         flash("Invalid username or password")
@@ -123,7 +122,7 @@ def user_login():
 @login_required
 def signout():
     cur_usr = flask_login.current_user
-    custom_html_pages.set_offline(cur_usr.username, User.data_base)
+    set_offline(cur_usr.username, User.data_base)
     logout_user()
     return redirect("/")
 
@@ -131,7 +130,7 @@ def signout():
 @app.route('/login/settings')
 @login_required
 def usr_settings():
-    return custom_html_pages.settings_page(User.data_base)
+    return settings_page(User.data_base)
 
 
 @app.route("/movies/search")
@@ -156,9 +155,9 @@ def search_movie():
 def user_home():
     # check database if user is logged in
     cur_usr = flask_login.current_user
-    online_users = custom_html_pages.get_online_users(cur_usr.username, User.data_base)
+    online_users = get_online_users(cur_usr.username, User.data_base)
     new_main = ""
-    f = open("../templates/main.html")
+    f = open("templates/main.html")
     print(online_users)
 
     for line in f:
@@ -168,7 +167,7 @@ def user_home():
                 line = line.replace("{{end_loop}}", "")
                 new_main += line.replace("{{Username}}", names)
         elif "{{Image_API}}" in line:
-            new_main += line.replace("{{Image_API}}", "../static/images/default-movie.jpeg")
+            new_main += line.replace("{{Image_API}}", "/static/images/default-movie.jpeg")
         elif "{{Movie_Name}}" in line:
             new_main += line.replace("{{Movie_Name}}", "NONE")
         else:
@@ -253,4 +252,4 @@ def parse_movie_response(movie_name):
 
 
 if __name__ == '__main__':
-    app.run(port=8000, host="0.0.0.0", debug=True)
+    app.run(port=8000, host="0.0.0.0")
