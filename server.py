@@ -64,13 +64,11 @@ def load_user(username):
 
 @app.route("/")
 @app.route("/login")
-@app.route("/templates/login.html")
 def signin():
     return render_template("login.html")
 
 
 @app.route("/signup")
-@app.route("/templates/signup.html")
 def signup():
     return render_template("signup.html")
 
