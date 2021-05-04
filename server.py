@@ -77,17 +77,14 @@ def create_account():
     username = request.form['usr']
     email = request.form['eml']
     password = request.form['pswd']
-
+    check = check_users(username, email)
     # We will do name validity so no duplicate user can exist
-    if User.data_base.users.find({"username": username}).count() > 0:
-        # display username already exists
-        return redirect("/create-account")
+    if check == 'email':
+        return render_template("signuperror.html")
 
     # Email will be added to the database later on
-    if User.data_base.users.find({"email": username}).count() > 0:
-        # change user name to email ^^^         ^^^
-        # display email already has an account associated with it
-        return redirect("/create-account")
+    if check == 'username':
+        return render_template("signuperror.html")
 
     # Salt and hash password; store in database
     salt = bcrypt.gensalt()
@@ -103,6 +100,9 @@ def user_login():
     username = request.form['username']
     password = request.form['password']
     data = User.data_base.users.find({"username": username})
+    check = check_users(username, "")
+    if check == " ":
+        return render_template("loginerror.html")
     for ent in data:
         if bcrypt.checkpw(password.encode(), ent['password']):
             usr_login = True
@@ -115,7 +115,7 @@ def user_login():
         return redirect("/login/homepage")
     else:
         flash("Invalid username or password")
-        return error_response()
+        return redirect('/')
     # check if user is in the data base
     # if user exist check they have the correct password
 
@@ -253,5 +253,19 @@ def parse_movie_response(movie_name):
     print("release date: ", movie_release_date)
 
 
+def check_users(username, email):
+    get_usr = User.data_base.users.find()
+
+    for items in get_usr:
+        if 'username' in items:
+            if items['username'] == username:
+                return "username"
+        if 'email' in items:
+            if items['email'] == email:
+                return "email"
+    return " "
+
+
 if __name__ == '__main__':
     app.run(port=8000, host="0.0.0.0")
+
