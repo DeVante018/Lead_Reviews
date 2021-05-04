@@ -159,7 +159,7 @@ def user_home():
     cur_usr = flask_login.current_user
     online_users = get_online_users(cur_usr.username, User.data_base)
     new_main = ""
-    f = open("../templates/main.html")
+    f = open("templates/main.html")
     print(online_users)
 
     for line in f:
@@ -169,7 +169,7 @@ def user_home():
                 line = line.replace("{{end_loop}}", "")
                 new_main += line.replace("{{Username}}", names)
         elif "{{Image_API}}" in line:
-            new_main += line.replace("{{Image_API}}", "../static/images/default-movie.jpeg")
+            new_main += line.replace("{{Image_API}}", "/static/images/default-movie.jpeg")
         elif "{{Movie_Name}}" in line:
             new_main += line.replace("{{Movie_Name}}", "NONE")
         else:
