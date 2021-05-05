@@ -8,7 +8,8 @@ from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
 
-from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users, allowed_file, store_in_db
+from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users, allowed_file, store_in_db, \
+    add_form
 from src.make_api_call import Api
 from flask_socketio import SocketIO
 
@@ -169,13 +170,12 @@ def user_home():
     for line in f:
         if '{{Username}}' in line:
             for names in online_users:
-                line = line.replace("{{start_loop}}", "")
-                line = line.replace("{{end_loop}}", "")
-                new_main += line.replace("{{Username}}", names)
+                #new_main += line.replace("{{Username}}", names)
+                new_main += add_form(names, User.data_base)
         elif "{{Image_API}}" in line:
-            new_main += line.replace("{{Image_API}}", "/static/images/default-movie.jpeg")
+            new_main += line .replace("{{Image_API}}", "/static/images/default-movie.jpeg")
         elif "{{Movie_Name}}" in line:
-            new_main += line.replace("{{Movie_Name}}", "NONE")
+            new_main += line.replace("{{Movie_Name}}", "N/A")
         else:
             if "{{start_movies_loop}}" not in line and "{{end_movies_loop}}" not in line:
                 new_main += line
@@ -227,15 +227,21 @@ def do_not_disturb():
     return redirect('/login/settings')
 
 
-@app.route("/login/chatbox", methods=['GET'])
-@app.route("/chatbox", methods=['GET'])
+@app.route("/enter-chat", methods=['POST'])
 def dm():
+    both = request.form
+    form = request.form["connected-username"]
+    print("form: ", form)
+    print("both: ", both)
     return render_template('chatbox.html')
 
 
 @app.route("/uploadtext", methods=['POST'])
 def send_message():
-    print("TEMP")
+    form = request.form
+    data = request.data
+    print("form: ", form)
+    print("data: ", data)
 
 
 @app.route("/profilepic-upload", methods=['GET', 'POST'])
