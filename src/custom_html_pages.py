@@ -5,12 +5,12 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def settings_page(database) -> str:
-    do_not_disturb = ""
+    see_other_pictures = ""
     cur_usr = flask_login.current_user
     user = cur_usr.username
     data = database.users.find({"username": user})
     for info in data:
-        do_not_disturb = info['do_not_disturb']
+        see_other_pictures = info['see-profiles-image']
 
     f = open("templates/settings.html", 'r')
     img = "/static/images/default_pic.png"
@@ -23,10 +23,10 @@ def settings_page(database) -> str:
         if '{Profile_Image}' in line:
             custom += line.replace('{Profile_Image}', img)
         elif '{{On_Off_Indicator}}' in line:
-            if do_not_disturb:
-                custom += line.replace('{{On_Off_Indicator}}', "off")
-            else:
+            if see_other_pictures:
                 custom += line.replace('{{On_Off_Indicator}}', "on")
+            else:
+                custom += line.replace('{{On_Off_Indicator}}', "off")
         else:
             custom += line
 
@@ -86,12 +86,17 @@ def store_in_db(db, usr, filename):
     return
 
 
-def add_form(user, db):
+def add_form(cur_user, user, db):
 
     data = db.pictures.find({"username": user})
+    settigs = db.users.find({"username": cur_user})
     img = "/static/images/default_pic.png"
-    for info in data:
-        img = "/static/images/" + info['picture']
+    for s in settigs:
+        check = s["see-profiles-image"]
+        if check:
+            for info in data:
+                img = "/static/images/" + info['picture']
+
 
     form = '<a>{{Username}} <img src=\'{{image_placeholder}}\' height="100" width="100" alt="pfp_placeholder">\n'
     form += '<form action=\'/enter-chat\'id=\'enter-chat-form\' method=\'post\'>\n'
