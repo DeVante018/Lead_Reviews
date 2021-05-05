@@ -8,8 +8,9 @@ from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
 
-from src.custom_html_pages import set_offline, set_online, settings_page, get_online_users, allowed_file, store_in_db, \
-    add_form
+from src.chat import insert_chat, load_chat
+from src.custom_html_pages import set_offline, set_online, settings_page, \
+    get_online_users, allowed_file, store_in_db, add_form
 from src.make_api_call import Api
 from flask_socketio import SocketIO
 
@@ -95,7 +96,7 @@ def create_account():
     salt = bcrypt.gensalt()
     password = bcrypt.hashpw(password.encode(), salt)
     User.data_base.online.insert_one({"username": username, "status": "offline"})
-    User.data_base.users.insert_one({"username": username, "password": password, "email": email, "do_not_disturb": False})
+    User.data_base.users.insert_one({"username": username, "password": password, "email": email, "see-profiles-image": True})
     return redirect("/")
 
 
@@ -171,7 +172,7 @@ def user_home():
         if '{{Username}}' in line:
             for names in online_users:
                 #new_main += line.replace("{{Username}}", names)
-                new_main += add_form(names, User.data_base)
+                new_main += add_form(cur_usr.username, names, User.data_base)
         elif "{{Image_API}}" in line:
             new_main += line .replace("{{Image_API}}", "/static/images/default-movie.jpeg")
         elif "{{Movie_Name}}" in line:
@@ -196,21 +197,21 @@ def like_movie(movie_id, movie_name, user_name, user_hash):
 
 @app.route("/disturb", methods=['POST'])
 @login_required
-def do_not_disturb():
+def see_other_profile_images():
     cur_usr = flask_login.current_user
     user = cur_usr.username
     print("Current user :", user)
     data = User.data_base.users.find({"username": user})
     cur_setting = True
     for fields in data:
-        cur_setting = fields['do_not_disturb']
+        cur_setting = fields['see-profiles-image']
 
     if cur_setting:
         User.data_base.users.update_one(
             {"username": user},
             {
                 "$set": {
-                    "do_not_disturb": False}
+                    "see-profiles-image": False}
             }
         )
 
@@ -220,31 +221,41 @@ def do_not_disturb():
             {"username": user},
             {
                 "$set": {
-                    "do_not_disturb": True}
+                    "see-profiles-image": True}
             }
         )
 
     return redirect('/login/settings')
 
 
-@app.route("/enter-chat", methods=['POST'])
+@app.route("/enter-chat", methods=['GET', 'POST'])
+@login_required
 def dm():
-    both = request.form
-    form = request.form["connected-username"]
-    print("form: ", form)
-    print("both: ", both)
-    return render_template('chatbox.html')
+    user = request.form["connected-username"]
+    page = load_chat(flask_login.current_user.username, user, User.data_base)
+    return page
 
 
 @app.route("/uploadtext", methods=['POST'])
+@login_required
 def send_message():
-    form = request.form
-    data = request.data
-    print("form: ", form)
-    print("data: ", data)
+    print(request.form)
+    cur_usr = flask_login.current_user
+    message = request.form['msg']
+    message = message.replace("&", "&amp;")
+    message = message.replace("<", "&lt;")
+    message = message.replace(">", "&gt;")
+    send = request.form['send-to']
+    send = send.replace("&", "&amp;")
+    send = send.replace("<", "&lt;")
+    send = send.replace(">", "&gt;")
+    insert_chat(cur_usr.username, send, message)
+    new_page = load_chat(cur_usr.username, send, User.data_base)
+    return new_page
 
 
 @app.route("/profilepic-upload", methods=['GET', 'POST'])
+@login_required
 def upload_picture():
     print(request.files)
     if 'upload' not in request.files:
