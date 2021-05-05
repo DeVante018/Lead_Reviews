@@ -84,3 +84,22 @@ def store_in_db(db, usr, filename):
         }
     )
     return
+
+
+def add_form(user, db):
+
+    data = db.pictures.find({"username": user})
+    img = "/static/images/default_pic.png"
+    for info in data:
+        img = "/static/images/" + info['picture']
+
+    form = '<a>{{Username}} <img src=\'{{image_placeholder}}\' height="100" width="100" alt="pfp_placeholder">\n'
+    form += '<form action=\'/enter-chat\'id=\'enter-chat-form\' method=\'post\'>\n'
+    form += '<input type=\'hidden\' id=\'connected-username\' name=\'connected-username\'value=' + user + '>\n'
+    form += '<input type=\'submit\'id=\'enterchat\' value=\'Chat\'>\n'
+    form += '</form>\n'
+    form = form.replace("{{Username}}", user)
+    form = form.replace("{{image_placeholder}}", img)
+    return form
+
+
