@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='stylesheets/style.css')}}">
+    <link rel="stylesheet" href="../static/stylesheets/style.css"/>
 <title>leadreviews</title>
 <taskbar>
     <li><b>leadreviews</b></li>
@@ -19,14 +19,14 @@
 
 <body>
     <h1> You are chatting with:
-        <img src={Person_Profile_Image} height="300" width="300"></img>
+        <img src={Person_Profile_Image} height="250" width="250"></img>
         <p> {{person_name}}</p>
     </h1>
 
 
     <div style="overflow-y: auto; justify-content: left;">
         {{start_loop}}
-        <p> {{name}} : &quot;{{comment}}&quot;</p>
+        <p> {{comment}}</p>
         <!-- <p> {{name}} : </br> <img src="{{image_name}}" alt="picture did not load correctly, please try again" height="300" width="300"></image> </p> -->
         {{end_loop}}
     </div>
@@ -45,6 +45,7 @@
         <label for="commenting"> <b>Messages: </b> </label>
         <textarea id="commenting" rows="3" cols="100" placeholder = "Enter Message.." name = "msg" required></textarea>
         <input type='submit' id="submitbutton" value='Send'>
+        <input type='hidden' id='connected-username' name='send-to' value={{person_name}}>
         </form>
     </div>
     
