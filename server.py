@@ -3,7 +3,7 @@ import os
 
 import bcrypt
 import flask_login
-from flask import Flask, redirect, render_template, request, flash
+from flask import Flask, redirect, render_template, request
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
@@ -120,7 +120,6 @@ def user_login():
         set_online(username, User.data_base)
         return redirect("/login/homepage")
     else:
-        flash("Invalid username or password")
         return redirect('/')
     # check if user is in the data base
     # if user exist check they have the correct password
@@ -263,7 +262,6 @@ def upload_picture():
         return redirect('/login/settings')
     file = request.files['upload']
     if file.filename == '':
-        flash('No selected file')
         return redirect('login/settings')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
