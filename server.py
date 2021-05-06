@@ -81,9 +81,9 @@ def signup():
 @app.route("/create-account", methods=['POST'])
 def create_account():
     username = request.form['usr']
-    username = username.replace("&", "&amp;")
-    username = username.replace("<", "&lt;")
-    username = username.replace(">", "&gt;")
+
+    if "<" in username or ">" in username or "&" in username:
+        return render_template("invalidcharacters.html")
 
     email = request.form['eml']
     password = request.form['pswd']
