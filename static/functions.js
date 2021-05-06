@@ -1,7 +1,7 @@
 
-function noDisturb(){
-    alert("You turned on [Do Not Disturb]")
-}
+// function noDisturb(){
+//     alert("You turned on [Do Not Disturb]")
+// }
 // do nothing because using flask socketio
 // // taken from hw 4
 // // Establish a WebSocket connection with the server
