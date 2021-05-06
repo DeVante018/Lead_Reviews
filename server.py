@@ -81,6 +81,10 @@ def signup():
 @app.route("/create-account", methods=['POST'])
 def create_account():
     username = request.form['usr']
+    username = username.replace("&", "&amp;")
+    username = username.replace("<", "&lt;")
+    username = username.replace(">", "&gt;")
+
     email = request.form['eml']
     password = request.form['pswd']
     check = check_users(username, email)
@@ -104,6 +108,9 @@ def create_account():
 def user_login():
     usr_login = False
     username = request.form['username']
+    username = username.replace("&", "&amp;")
+    username = username.replace("<", "&lt;")
+    username = username.replace(">", "&gt;")
     password = request.form['password']
     data = User.data_base.users.find({"username": username})
     check = check_users(username, "")
