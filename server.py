@@ -127,7 +127,7 @@ def user_login():
         set_online(username, User.data_base)
         return redirect("/login/homepage")
     else:
-        flash("Invalid username or password")
+        # flash("Invalid username or password")
         return redirect('/')
     # check if user is in the data base
     # if user exist check they have the correct password
@@ -270,7 +270,7 @@ def upload_picture():
         return redirect('/login/settings')
     file = request.files['upload']
     if file.filename == '':
-        flash('No selected file')
+        # flash('No selected file')
         return redirect('login/settings')
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
