@@ -279,23 +279,23 @@ def upload_picture():
     return redirect("login/settings")
 
 
-def parse_movie_response(movie_name):
-    s = json.loads(movie_name)
-    # print(s)
-    movie = s['d'][0]
-    movie_image_info = movie['i']
-    movie_id = movie['id']
-    movie_name = movie['l']
-    movie_rank = movie['rank']
-    movie_stars = movie['s']
-    movie_release_date = movie['y']
+# def parse_movie_response(movie_name):
+#     s = json.loads(movie_name)
+#     # print(s)
+#     movie = s['d'][0]
+#     movie_image_info = movie['i']
+#     movie_id = movie['id']
+#     movie_name = movie['l']
+#     movie_rank = movie['rank']
+#     movie_stars = movie['s']
+#     movie_release_date = movie['y']
 
-    print("Movie image info: ", movie_image_info)
-    print("movie id: ", movie_id)
-    print("movie name: ", movie_name)
-    print("movie rank: ", movie_rank)
-    print("movie stars: ", movie_stars)
-    print("release date: ", movie_release_date)
+#     print("Movie image info: ", movie_image_info)
+#     print("movie id: ", movie_id)
+#     print("movie name: ", movie_name)
+#     print("movie rank: ", movie_rank)
+#     print("movie stars: ", movie_stars)
+#     print("release date: ", movie_release_date)
 
 
 def check_users(username, email):
