@@ -148,20 +148,20 @@ def usr_settings():
     return settings_page(User.data_base)
 
 
-@app.route("/movies/search")
-@login_required
-def search_page():
-    return render_template(search)
+# @app.route("/movies/search")
+# @login_required
+# def search_page():
+#     return render_template(search)
 
 
-@app.route("/movies/search/go", methods=['POST'])
-@login_required
-def search_movie():
-    name_of_movie = request.form['movie']
-    print(name_of_movie)
-    call = aco.make_call_to_server(name_of_movie)
-    parse_movie_response(call)
-    return "done"
+# @app.route("/movies/search/go", methods=['POST'])
+# @login_required
+# def search_movie():
+#     name_of_movie = request.form['movie']
+#     print(name_of_movie)
+#     call = aco.make_call_to_server(name_of_movie)
+#     parse_movie_response(call)
+#     return "done"
 
 
 @app.route("/login/homepage", methods=['GET'])
@@ -195,11 +195,11 @@ def error_response():
     return render_template(not_found)
 
 
-@app.route("/user/like/movie", methods=['POST'])
-@login_required
-def like_movie(movie_id, movie_name, user_name, user_hash):
-    value = 0
-    return "no implementation"
+# @app.route("/user/like/movie", methods=['POST'])
+# @login_required
+# def like_movie(movie_id, movie_name, user_name, user_hash):
+#     value = 0
+#     return "no implementation"
 
 
 @app.route("/disturb", methods=['POST'])
@@ -279,23 +279,23 @@ def upload_picture():
     return redirect("login/settings")
 
 
-def parse_movie_response(movie_name):
-    s = json.loads(movie_name)
-    # print(s)
-    movie = s['d'][0]
-    movie_image_info = movie['i']
-    movie_id = movie['id']
-    movie_name = movie['l']
-    movie_rank = movie['rank']
-    movie_stars = movie['s']
-    movie_release_date = movie['y']
+# def parse_movie_response(movie_name):
+#     s = json.loads(movie_name)
+#     # print(s)
+#     movie = s['d'][0]
+#     movie_image_info = movie['i']
+#     movie_id = movie['id']
+#     movie_name = movie['l']
+#     movie_rank = movie['rank']
+#     movie_stars = movie['s']
+#     movie_release_date = movie['y']
 
-    print("Movie image info: ", movie_image_info)
-    print("movie id: ", movie_id)
-    print("movie name: ", movie_name)
-    print("movie rank: ", movie_rank)
-    print("movie stars: ", movie_stars)
-    print("release date: ", movie_release_date)
+#     print("Movie image info: ", movie_image_info)
+#     print("movie id: ", movie_id)
+#     print("movie name: ", movie_name)
+#     print("movie rank: ", movie_rank)
+#     print("movie stars: ", movie_stars)
+#     print("release date: ", movie_release_date)
 
 
 def check_users(username, email):
