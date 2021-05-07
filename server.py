@@ -3,7 +3,7 @@ import os
 
 import bcrypt
 import flask_login
-from flask import Flask, redirect, render_template, request, flash
+from flask import Flask, redirect, render_template, request
 from flask_login import LoginManager, login_required, logout_user, login_user
 from flask_pymongo import PyMongo
 from werkzeug.utils import secure_filename
