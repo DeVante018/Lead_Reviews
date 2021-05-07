@@ -7,8 +7,7 @@ ENV FLASK_RUN_HOST=localhost
 COPY . .
 RUN pip install -r requirements.txt && \
     pip install flask_login && \
-    pip install flask_pymongo && \
-    pip install flask-socketio
+    pip install flask_pymongo
 
 
 EXPOSE 80
