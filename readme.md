@@ -14,6 +14,8 @@ Notes for grading
 . The do not disturb option is by default set to off but can be changed per user on the settings page. This will stop notifications of incoming dm messages (this uses web sockets)
 
 Report Document Links as alternative to the md files in the Report folder with formatting technical difficulties:
+
+
 Flask + Flask-login Report: https://docs.google.com/document/d/1_CNO9Hcaaww5b7JreVO-HZ9gtKduEjSBy4ceqVX4EmU/edit?usp=sharing 
 
 
