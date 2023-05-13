@@ -3,15 +3,23 @@ Lead reviews is a movie/show reviewing web app! You can look up your favorite se
 
 Notes for grading
 
-. Online users are displayed on the homepage (Users will not be logged out until they manually go to the settings page and log out)
+. Online users are displayed on the homepage (Users will not be logged out until they manually go to the settings page and log out or session expires)
 
-. Direct message by clicking an online user.
+. Direct message by clicking an online user. (The chat will persist)
 
 . Uploading multimedia content is done on the settings page for the profile picture
 
 . Logout is on the settings page
 
-. The do not disturb option is by default set to off but can be changed per user on the settings page. This will stop notifications of incoming dm messages (this uses web sockets)
+. Seeing other users profile pictures can be changed in the settings. By default this setting is on. When turned off This will display the default profile image for all users online.
+
+Report Document Links as alternative to the md files in the Report folder with formatting technical difficulties:
+
+
+Flask + Flask-login Report: https://docs.google.com/document/d/1_CNO9Hcaaww5b7JreVO-HZ9gtKduEjSBy4ceqVX4EmU/edit?usp=sharing 
+
+
+Werkzeug Report: https://drive.google.com/file/d/15hyIjeNRcQ3K5NxgPx3wp2xdDk2eF1bL/view?usp=sharing 
 
 Web app url: http://cse312-11.dcsl.buffalo.edu
 

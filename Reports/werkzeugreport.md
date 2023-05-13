@@ -1,9 +1,14 @@
 WERKZEUG REPORT
+
 Werkzeug (LIBRARY)
+
 What does this technology (library/framework/service) accomplish for you?
-    We used its secure_filename function to make sure filenames of the files users can upload are not malicious.
+
+We used its secure_filename function to make sure filenames of the files users can upload are not malicious.
+
 How does this technology accomplish what it does?
-    Explanation for secure_filename entailed below
+
+Explanation for secure_filename entailed below
 
 What license(s) or terms of service apply to this technology?
 
@@ -40,9 +45,12 @@ To summarize: it is basically saying that we can use the library/source code how
 
 
 Functionality of Werkzeug
+
 Secure_filename():
+
 What does this technology (library/framework/service) accomplish for you?
-    The secure_filename function helps us maintain security in filenames of uploaded files as it is a way for an uploaded file to have a “safe” name. What does “safe” mean in this context? This function makes sure  the file name that is being uploaded does not contain spaces or checks to make sure the name of the file itself isn't something malicious. For example  “../../../admin/passwords”. If it is deemed to be unsafe, a new name will be generated but it is up to us to verify that this new name is indeed unique. This function will also allow file names to mostly, if not completely maintain the original naming convention if deemed safe.
+
+The secure_filename function helps us maintain security in filenames of uploaded files as it is a way for an uploaded file to have a “safe” name. What does “safe” mean in this context? This function makes sure  the file name that is being uploaded does not contain spaces or checks to make sure the name of the file itself isn't something malicious. For example  “../../../admin/passwords”. If it is deemed to be unsafe, a new name will be generated but it is up to us to verify that this new name is indeed unique. This function will also allow file names to mostly, if not completely maintain the original naming convention if deemed safe.
 
 How does this technology accomplish what it does? 
 
