@@ -1,4 +1,3 @@
-import json
 import os
 
 import bcrypt
@@ -19,7 +18,7 @@ app.secret_key = os.urandom(16)
 app.config['SECRET_KEY'] = app.secret_key
 
 # CHANGE localhost TO database - DELETE
-app.config['MONGO_URI'] = "mongodb://database/leadreviews"
+app.config['MONGO_URI'] = "mongodb://database/leadreviews" #change to localhost when runnig locally
 app.config['UPLOAD_FOLDER'] = 'static/images'
 mongo = PyMongo(app)
 login_manager = LoginManager()
@@ -137,7 +136,7 @@ def user_login():
 @login_required
 def signout():
     cur_usr = flask_login.current_user
-    set_offline(cur_usr.username, User.data_base)
+    set_offline(cur_usr.username, User.data_base) # set user to offline in database
     logout_user()
     return redirect("/")
 
@@ -173,7 +172,6 @@ def user_home():
     online_users = get_online_users(cur_usr.username, User.data_base)
     new_main = ""
     f = open("templates/main.html")
-    print(online_users)
 
     for line in f:
         if '{{Username}}' in line:
@@ -213,24 +211,13 @@ def see_other_profile_images():
     for fields in data:
         cur_setting = fields['see-profiles-image']
 
-    if cur_setting:
-        User.data_base.users.update_one(
-            {"username": user},
-            {
-                "$set": {
-                    "see-profiles-image": False}
-            }
-        )
-
-    else:
-        print("Setting was false")
-        User.data_base.users.update_one(
-            {"username": user},
-            {
-                "$set": {
-                    "see-profiles-image": True}
-            }
-        )
+    User.data_base.users.update_one(
+        {"username": user},
+        {
+            "$set": {
+                "see-profiles-image": not cur_setting}
+        }
+    )
 
     return redirect('/login/settings')
 
